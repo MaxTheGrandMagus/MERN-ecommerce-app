@@ -4,6 +4,7 @@
   "description": "MERN shopping cart app",
   "main": "server.js",
   "scripts": {
+    "start": "node backend/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
