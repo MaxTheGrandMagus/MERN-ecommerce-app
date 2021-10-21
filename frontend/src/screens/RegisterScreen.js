@@ -18,11 +18,11 @@ const RegisterScreen = ({ location, history }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
 
-  const redirect = location.search ? location.search.split('=')[1] : '/';
-
   const dispatch = useDispatch();
   const userRegister = useSelector(state => state.userRegister);
   const { loading, error, userInfo } = userRegister;
+
+  const redirect = location.search ? location.search.split('=')[1] : '/';
 
   useEffect(() => {
     if(userInfo) {
@@ -67,7 +67,7 @@ const RegisterScreen = ({ location, history }) => {
 
       <Row className='py-3'>
         <Col>
-          Already have an Account? <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Login</Link>
+          Have an Account? <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Login</Link>
         </Col>
       </Row>
     </FormContainer>
