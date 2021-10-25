@@ -11,5 +11,4 @@ router.route('/profile')
     .put(protect, updateUserProfile)
 
 
-
 export default router;
