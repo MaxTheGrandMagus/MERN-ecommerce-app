@@ -9,7 +9,7 @@ import Loader from '../components/Loader';
 import { getOrderDetails, payOrder } from '../redux/actions/order.actions';
 import { ORDER_PAY_RESET } from '../redux/constants/order.constants';
 
-import { Row, Col, ListGroup, Card, Image, ListGroupItem } from 'react-bootstrap';
+import { Button, Row, Col, ListGroup, Card, Image, ListGroupItem } from 'react-bootstrap';
 import { PayPalButton } from 'react-paypal-button-v2';
 
 
@@ -25,6 +25,9 @@ const OrderScreen = ({ match }) => {
 
   const orderPay = useSelector(state => state.orderPay);
   const { loading:loadingPay, success:successPay } = orderPay;
+
+  const cart = useSelector(state => state.cart);
+  const { paymentMethod } = cart;
 
 
   if(!loading) {
@@ -63,6 +66,10 @@ const OrderScreen = ({ match }) => {
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payOrder(orderId, paymentResult))
+  }
+
+  const customPayHandler = () => {
+    dispatch(payOrder(orderId))
   }
 
 
@@ -155,14 +162,33 @@ const OrderScreen = ({ match }) => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroupItem>
-              {!order.isPaid && (
+              {
+                paymentMethod === 'PayPal' ? 
+                (!order.isPaid && (
+                  <ListGroupItem>
+                    {loadingPay && <Loader />}
+                    {!sdkReady ? <Loader /> : (
+                      <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
+                    )}
+                  </ListGroupItem>)
+                )
+                : (
+                  !order.isPaid && (
+                    <ListGroupItem className='d-grid gap-2'>
+                      {loadingPay && <Loader />}
+                      <Button variant='primary' amount={order.totalPrice} onClick={customPayHandler}>Custom Pay Button</Button>
+                    </ListGroupItem>)
+                )
+              }
+              {/* for PayPal only */}
+              {/* {!order.isPaid && (
                 <ListGroupItem>
                   {loadingPay && <Loader />}
                   {!sdkReady ? <Loader /> : (
                     <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
                   )}
                 </ListGroupItem>
-              )}
+              )} */}
             </ListGroup>
           </Card>    
         </Col>
