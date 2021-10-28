@@ -28,14 +28,14 @@ const ProductEditScreen = ({ match, history }) => {
   const productDetails = useSelector(state => state.productDetails);
   const { loading, error, product } = productDetails;
 
-  // const productUpdate = useSelector(state => state.productUpdate);
-  // const { loading:loadingUpdate, error:errorUpdate, success:successUpdate } = productUpdate;
+  const productUpdate = useSelector(state => state.productUpdate);
+  const { loading:loadingUpdate, error:errorUpdate, success:successUpdate } = productUpdate;
 
   useEffect(() => {
-    // if(successUpdate) {
-    //   dispatch({ type: PRODUCT_UPDATE_RESET })
-    //   history.push('/admin/productlist')
-    // } else {
+    if(successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET })
+      history.push('/admin/productlist')
+    } else {
       if(!product.name || product._id !== productId) {
         dispatch(listProductDetails(productId))
       } else {
@@ -47,12 +47,12 @@ const ProductEditScreen = ({ match, history }) => {
         setCountInStock(product.countInStock)
         setDescription(product.description)
       }
-    // }
-  }, [dispatch, product, productId, history])
+    }
+  }, [dispatch, product, productId, history, successUpdate])
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // dispatch(updateProduct({ _id: productId, name, email, isAdmin }))
+    dispatch(updateProduct({ _id: productId, name, price, image, brand, category, description, countInStock }))
   }
 
   return (
@@ -60,8 +60,8 @@ const ProductEditScreen = ({ match, history }) => {
       <Link to='/admin/productlist' className='btn btn-light my-3'>Go Back</Link>
       <FormContainer>
         <h1>Edit Product</h1>
-        {/* { loadingUpdate && <Loader /> }
-        { errorUpdate && <Message variant='danger'>{errorUpdate}</Message> } */}
+        { loadingUpdate && <Loader /> }
+        { errorUpdate && <Message variant='danger'>{errorUpdate}</Message> }
         { loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
           <Form onSubmit={submitHandler}>
             <FormGroup className='py-3' controlId='name'>
