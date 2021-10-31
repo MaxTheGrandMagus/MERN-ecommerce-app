@@ -27,17 +27,18 @@ const ProductScreen = ({ history, match }) => {
   const { userInfo } = userLogin;
 
   const productReviewCreate = useSelector(state => state.productReviewCreate);
-  const { error:errorProductReview, success:successProductReview } = productReviewCreate;
+  const { loading: loadingProductReview, error:errorProductReview, success:successProductReview } = productReviewCreate;
 
   useEffect(() => {
     if(successProductReview) {
-      alert('Review Submitted')
       setRating(0)
       setComment('')
+    }
+    if (!product._id || product._id !== match.params.id) {
+      dispatch(listProductDetails(match.params.id))
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
     }
-    dispatch(listProductDetails(match.params.id))
-  }, [dispatch, match, successProductReview])
+  }, [dispatch, match, successProductReview, product])
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
@@ -133,7 +134,9 @@ const ProductScreen = ({ history, match }) => {
                   ))}
                   <ListGroupItem>
                     <h2>Write a Customer Review</h2>
-                    {errorProductReview && <Message variant='danger'>{errorProductReview}</Message>}
+                    {successProductReview && (<Message variant='success'>Review submitted successfully</Message>)}
+                    {loadingProductReview && <Loader />}
+                    {errorProductReview && (<Message variant='danger'>{errorProductReview}</Message>)}
                     {userInfo ? (
                       <Form onSubmit={submitHandler}>
                         <FormGroup className='mt-3' controlId='rating'>
@@ -152,7 +155,7 @@ const ProductScreen = ({ history, match }) => {
                           <FormControl as='textarea' row='3' value={comment} onChange={(e) => setComment(e.target.value)}>
                           </FormControl>
                         </FormGroup>
-                        <Button className='mt-3' type='submit' variant='primary'>Submit</Button>
+                        <Button className='mt-3' type='submit' variant='primary' disabled={loadingProductReview}>Submit</Button>
                       </Form>
                     ) : (
                       <Message>Please <Link to='/login'>sign in</Link> to write a review</Message>

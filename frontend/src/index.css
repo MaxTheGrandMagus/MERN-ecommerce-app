@@ -52,3 +52,9 @@ h2 {
   justify-content: center;
   /* margin: 0 auto !important; */
 }
+
+@media (max-width: 900px) {
+  .carousel-caption h2 {
+    font-size: 2.5vw;
+  }
+}
