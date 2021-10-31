@@ -19,3 +19,36 @@ h2 {
 .rating span {
   margin: 0.1rem;
 }
+
+/* carousel */
+.carousel {
+  border-radius: 5px;
+}
+
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item-active {
+  display: flex;
+  text-align: center;
+}
+/* .carousel-caption {
+  position: absolute;
+  top: 0;
+} */
+
+.carousel-caption h2 {
+  color: #fff;
+}
+
+.carousel img {
+  height: 400px;
+  padding: 30px;
+  margin-bottom: 100px;
+  border-radius: 34px;
+}
+
+.carousel a {
+  display: flex;
+  justify-content: center;
+  /* margin: 0 auto !important; */
+}
