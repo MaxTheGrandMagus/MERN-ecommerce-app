@@ -26,7 +26,7 @@ const ProductScreen = ({ history, match }) => {
   const { userInfo } = userLogin;
 
   const productReviewCreate = useSelector(state => state.productReviewCreate);
-  const { loading:loadingProductReview, error:errorProductReview, success:successProductReview } = productReviewCreate;
+  const { error:errorProductReview, success:successProductReview } = productReviewCreate;
 
   useEffect(() => {
     if(successProductReview) {
